@@ -3,7 +3,7 @@ Packages:
   - Version: 1.2.0
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2026-11-10
-    PackageUrl: https://github.com/ahar2611/PlayNext/releases/download/v1.2.0/PlayNext_67c5a910-8da6-44c2-bd79-88b4c171c113_1_2_0.pext
+    PackageUrl: https://github.com/ahar2611/PlayNext/releases/download/v1.2.0/PlayNext-v1.2.0.pext
     Changelog:
       - First public release.
       - Ranked Top 10/15/25 picks for Overall and 8 editable categories, each with a short reason.

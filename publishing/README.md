@@ -12,9 +12,9 @@ New submissions to PlayniteAddonDatabase are **on hold**. A new add-on portal is
 ## Releasing a new version
 
 1. Bump `Version` in `src/extension.yaml` and `<Version>` in `src/PlayNext.csproj`.
-2. Add the changes to `CHANGELOG.md`, and add a new entry at the **top** of `installer.yaml` with the matching `PackageUrl`.
+2. Add the changes to `CHANGELOG.md`, and add a new entry at the **top** of `installer.yaml` with the matching `PackageUrl` (`.../releases/download/v1.2.1/PlayNext-v1.2.1.pext`).
 3. Commit and push, then either:
-   - push a tag (`git tag v1.2.1 && git push origin v1.2.1`). GitHub Actions builds `PlayNext_67c5a910-8da6-44c2-bd79-88b4c171c113_1_2_1.pext` and attaches it to a **draft** release for you to review and publish, or
+   - push a tag (`git tag v1.2.1 && git push origin v1.2.1`). GitHub Actions builds `PlayNext-v1.2.1.pext` and attaches it to a **draft** release for you to review and publish, or
    - on GitHub, go to **Releases → Draft a new release**, type the new tag `v1.2.1` and publish it. The workflow then attaches the `.pext` to that release automatically.
 
 `RequiredApiVersion` is the Playnite SDK version the add-on is built against (`PlayniteSDK` in `src/PlayNext.csproj`, currently 6.11.0).
