@@ -29,7 +29,7 @@ jobs:
         shell: pwsh
         run: |
           $version = (Select-String -Path src/extension.yaml -Pattern '^Version:\s*(.+)$').Matches[0].Groups[1].Value.Trim()
-          $name = "PlayNext_67c5a910-8da6-44c2-bd79-88b4c171c113_$($version.Replace('.', '_')).pext"
+          $name = "PlayNext-v$version.pext"
           $out = 'src/bin/Release'
           Compress-Archive -Path "$out/PlayNext.dll", "$out/extension.yaml", "$out/icon.png", "$out/sidebar.png" -DestinationPath "$name.zip"
           Move-Item "$name.zip" $name
