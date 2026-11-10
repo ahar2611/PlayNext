@@ -39,7 +39,7 @@ namespace PlayNext
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-            logger.Info($"Play Next: started (mode {PlayniteApi.ApplicationInfo.Mode}, tray icon {(Settings.Settings.ShowTrayIcon ? "on" : "off")}).");
+            logger.Info($"PlayNext: started (mode {PlayniteApi.ApplicationInfo.Mode}, tray icon {(Settings.Settings.ShowTrayIcon ? "on" : "off")}).");
             if (IsDesktopMode)
             {
                 RunOnUi(UpdateTrayIcon);
@@ -82,7 +82,7 @@ namespace PlayNext
                 }
                 catch (Exception e)
                 {
-                    logger.Error(e, "Play Next: couldn't create the tray icon.");
+                    logger.Error(e, "PlayNext: couldn't create the tray icon.");
                 }
             }
             else if (!Settings.Settings.ShowTrayIcon && trayIcon != null)
@@ -102,14 +102,14 @@ namespace PlayNext
                 UpdateTrayIcon();
                 PlayniteApi.Notifications.Add(new NotificationMessage(
                     "PlayNext_TrayHidden",
-                    "Play Next's tray icon is hidden. Turn it back on in Settings → Extensions → Play Next, or use the Play Next button in the sidebar.",
+                    "PlayNext's tray icon is hidden. Turn it back on in Settings → Extensions → PlayNext, or use the PlayNext button in the sidebar.",
                     NotificationType.Info,
                     () => OpenSettings()));
             });
         }
 
         /// <summary>
-        /// Runs a UI action so that a bug in Play Next shows a notification instead of crashing Playnite
+        /// Runs a UI action so that a bug in PlayNext shows a notification instead of crashing Playnite
         /// (exceptions from tray clicks would otherwise take the whole app down).
         /// </summary>
         public void Safe(string what, Action action)
@@ -120,12 +120,12 @@ namespace PlayNext
             }
             catch (Exception e)
             {
-                logger.Error(e, $"Play Next: {what} failed.");
+                logger.Error(e, $"PlayNext: {what} failed.");
                 try
                 {
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "PlayNext_Error",
-                        $"Play Next hit a problem ({what}): {e.Message} Details are in Playnite's log.",
+                        $"PlayNext hit a problem ({what}): {e.Message} Details are in Playnite's log.",
                         NotificationType.Error));
                 }
                 catch { }
@@ -149,7 +149,7 @@ namespace PlayNext
         {
             yield return new SidebarItem
             {
-                Title = "Play Next",
+                Title = "PlayNext",
                 Type = SiderbarItemType.Button,
                 Icon = Path.Combine(InstallDir, "sidebar.png"),
                 Activated = () => Safe("opening the window", OpenWindow)
@@ -160,13 +160,13 @@ namespace PlayNext
         {
             yield return new MainMenuItem
             {
-                MenuSection = "@Play Next",
+                MenuSection = "@PlayNext",
                 Description = "Open recommendations",
                 Action = a => Safe("opening the window", OpenWindow)
             };
             yield return new MainMenuItem
             {
-                MenuSection = "@Play Next",
+                MenuSection = "@PlayNext",
                 Description = "Settings",
                 Action = a => Safe("opening settings", OpenSettings)
             };

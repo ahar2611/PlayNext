@@ -98,7 +98,7 @@ namespace PlayNext.Providers
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
             var target = request.RequestUri.Host + request.RequestUri.AbsolutePath;
-            logger.Info($"Play Next: {what}: {request.Method} {target} (timeout {timeout.TotalSeconds:0}s)…");
+            logger.Info($"PlayNext: {what}: {request.Method} {target} (timeout {timeout.TotalSeconds:0}s)…");
             using (var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(userToken))
             {
                 timeoutCts.CancelAfter(timeout);
@@ -107,20 +107,20 @@ namespace PlayNext.Providers
                     using (var resp = await Client.SendAsync(request, timeoutCts.Token).ConfigureAwait(false))
                     {
                         var body = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
-                        logger.Info($"Play Next: {what}: HTTP {(int)resp.StatusCode} after {watch.Elapsed.TotalSeconds:0.0}s ({body.Length} chars).");
+                        logger.Info($"PlayNext: {what}: HTTP {(int)resp.StatusCode} after {watch.Elapsed.TotalSeconds:0.0}s ({body.Length} chars).");
                         return new Reply { Status = (int)resp.StatusCode, Body = body };
                     }
                 }
                 catch (OperationCanceledException) when (!userToken.IsCancellationRequested)
                 {
-                    logger.Warn($"Play Next: {what}: no answer after {watch.Elapsed.TotalSeconds:0}s.");
+                    logger.Warn($"PlayNext: {what}: no answer after {watch.Elapsed.TotalSeconds:0}s.");
                     throw new ProviderTimeoutException($"{what}: {request.RequestUri.Host} didn't answer within {timeout.TotalSeconds:0} seconds. " +
                         "Check that a firewall, antivirus or VPN isn't blocking Playnite from the internet, then try again.");
                 }
                 catch (HttpRequestException e)
                 {
                     var root = e.GetBaseException();
-                    logger.Error(e, $"Play Next: {what}: connection to {request.RequestUri.Host} failed.");
+                    logger.Error(e, $"PlayNext: {what}: connection to {request.RequestUri.Host} failed.");
                     var hint = root.Message.IndexOf("SSL", StringComparison.OrdinalIgnoreCase) >= 0 || root.Message.IndexOf("TLS", StringComparison.OrdinalIgnoreCase) >= 0
                         ? " (secure connection failed; make sure Windows is up to date)"
                         : string.Empty;
@@ -141,7 +141,7 @@ namespace PlayNext.Providers
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
             var host = request.RequestUri.Host;
-            logger.Info($"Play Next: {what}: {request.Method} {host}{request.RequestUri.AbsolutePath} (streaming, first data within {firstData.TotalSeconds:0}s, pauses up to {idle.TotalSeconds:0}s, max {total.TotalSeconds:0}s)…");
+            logger.Info($"PlayNext: {what}: {request.Method} {host}{request.RequestUri.AbsolutePath} (streaming, first data within {firstData.TotalSeconds:0}s, pauses up to {idle.TotalSeconds:0}s, max {total.TotalSeconds:0}s)…");
             int lines = 0;
             bool gotHeaders = false;
             using (var totalCts = CancellationTokenSource.CreateLinkedTokenSource(userToken))
@@ -157,7 +157,7 @@ namespace PlayNext.Providers
                     using (linked.Token.Register(() => { try { resp.Dispose(); } catch { } }))
                     {
                         gotHeaders = true;
-                        logger.Info($"Play Next: {what}: HTTP {(int)resp.StatusCode} headers after {watch.Elapsed.TotalSeconds:0.0}s.");
+                        logger.Info($"PlayNext: {what}: HTTP {(int)resp.StatusCode} headers after {watch.Elapsed.TotalSeconds:0.0}s.");
                         if (!resp.IsSuccessStatusCode)
                         {
                             var errorBody = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -185,7 +185,7 @@ namespace PlayNext.Providers
                             }
                         }
                         linked.Token.ThrowIfCancellationRequested();
-                        logger.Info($"Play Next: {what}: stream finished after {watch.Elapsed.TotalSeconds:0.0}s ({lines} lines).");
+                        logger.Info($"PlayNext: {what}: stream finished after {watch.Elapsed.TotalSeconds:0.0}s ({lines} lines).");
                         return new Reply { Status = (int)resp.StatusCode, Body = string.Empty };
                     }
                 }
@@ -196,18 +196,18 @@ namespace PlayNext.Providers
                     if (!idleCts.IsCancellationRequested) why = $"was still going after {total.TotalSeconds:0} seconds";
                     else if (lines == 0) why = $"didn't respond within {firstData.TotalSeconds:0} seconds";
                     else why = $"stopped sending data for {idle.TotalSeconds:0} seconds";
-                    logger.Warn($"Play Next: {what}: {why} (headers: {gotHeaders}, lines: {lines}, {watch.Elapsed.TotalSeconds:0}s).");
+                    logger.Warn($"PlayNext: {what}: {why} (headers: {gotHeaders}, lines: {lines}, {watch.Elapsed.TotalSeconds:0}s).");
                     throw new ProviderTimeoutException($"{what}: {why}.");
                 }
                 catch (HttpRequestException e)
                 {
                     var root = e.GetBaseException();
-                    logger.Error(e, $"Play Next: {what}: connection to {host} failed.");
+                    logger.Error(e, $"PlayNext: {what}: connection to {host} failed.");
                     throw new ProviderException($"{what}: couldn't connect to {host}. {root.Message}");
                 }
                 catch (System.IO.IOException e)
                 {
-                    logger.Error(e, $"Play Next: {what}: connection to {host} dropped.");
+                    logger.Error(e, $"PlayNext: {what}: connection to {host} dropped.");
                     throw new ProviderTimeoutException($"{what}: the connection to {host} dropped ({e.GetBaseException().Message}).");
                 }
             }

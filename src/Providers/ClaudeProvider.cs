@@ -103,7 +103,7 @@ namespace PlayNext.Providers
         {
             if (string.IsNullOrWhiteSpace(apiKey))
             {
-                throw new ProviderException("No Claude API key yet. Create one at console.anthropic.com and paste it in Play Next's settings.");
+                throw new ProviderException("No Claude API key yet. Create one at console.anthropic.com and paste it in PlayNext's settings.");
             }
 
             var body = new Dictionary<string, object>
@@ -146,7 +146,7 @@ namespace PlayNext.Providers
                         {
                             return await CallAsync(systemPrompt, userPrompt, maxTokens, false, token).ConfigureAwait(false);
                         }
-                        if (status == 401) throw new ProviderException("Claude rejected the API key. Check it in Play Next's settings.");
+                        if (status == 401) throw new ProviderException("Claude rejected the API key. Check it in PlayNext's settings.");
                         if (status == 403) throw new ProviderException("This Claude API key isn't allowed to do that: " + Http.Shorten(message, 200));
                         if (status == 404) throw new ProviderException($"Claude model \"{model}\" wasn't found. Pick another model in settings.");
                         if (status == 429) throw new ProviderException("Claude rate limit reached. Wait a minute and try again.");

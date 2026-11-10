@@ -15,7 +15,7 @@ namespace PlayNext
     /// </summary>
     internal sealed class TrayIcon : IDisposable
     {
-        private const string Tooltip = "Play Next: what to play from your library";
+        private const string Tooltip = "PlayNext: what to play from your library";
         private static readonly ILogger logger = LogManager.GetLogger();
         private readonly NotifyIcon notifyIcon;
         private readonly System.Windows.Threading.DispatcherTimer pinTimer;
@@ -29,7 +29,7 @@ namespace PlayNext
             menu.Items.Add("Regenerate all lists", null, (s, e) => plugin.Safe("refreshing", plugin.RegenerateFromTray));
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add("Open Playnite", null, (s, e) => plugin.Safe("opening Playnite", plugin.ShowPlayniteWindow));
-            menu.Items.Add("Play Next settings", null, (s, e) => plugin.Safe("opening settings", plugin.OpenSettings));
+            menu.Items.Add("PlayNext settings", null, (s, e) => plugin.Safe("opening settings", plugin.OpenSettings));
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add("Hide this icon", null, (s, e) => plugin.Safe("hiding the icon", plugin.HideTrayIcon));
 
@@ -46,7 +46,7 @@ namespace PlayNext
             };
             notifyIcon.BalloonTipClicked += (s, e) => plugin.Safe("opening the popup", plugin.ToggleFlyout);
             SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
-            logger.Info("Play Next: tray icon created.");
+            logger.Info("PlayNext: tray icon created.");
 
             if (pinNextToClock)
             {
@@ -106,7 +106,7 @@ namespace PlayNext
             if (dispatcher == null) return;
             dispatcher.BeginInvoke(new Action(() =>
             {
-                try { UpdateIcon(); } catch (Exception ex) { logger.Warn(ex, "Play Next: couldn't update tray icon for theme."); }
+                try { UpdateIcon(); } catch (Exception ex) { logger.Warn(ex, "PlayNext: couldn't update tray icon for theme."); }
             }));
         }
 
@@ -117,12 +117,12 @@ namespace PlayNext
                 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
                 {
                     if (stream != null) return new Icon(stream, SystemInformation.SmallIconSize);
-                    logger.Warn("Play Next: embedded tray icon not found: " + resource);
+                    logger.Warn("PlayNext: embedded tray icon not found: " + resource);
                 }
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't load the tray icon image, using Playnite's.");
+                logger.Warn(e, "PlayNext: couldn't load the tray icon image, using Playnite's.");
             }
             try
             {
@@ -158,13 +158,15 @@ namespace PlayNext
                             var tip = entry?.GetValue("InitialTooltip") as string;
                             if (exe == null || tip == null) continue;
                             if (!exe.EndsWith("\\" + exeName, StringComparison.OrdinalIgnoreCase)) continue;
-                            if (!tip.StartsWith("Play Next", StringComparison.OrdinalIgnoreCase)) continue;
+                            // Windows keeps the tooltip from when the icon first appeared; older versions said "Play Next".
+                            if (!tip.StartsWith("PlayNext", StringComparison.OrdinalIgnoreCase) &&
+                                !tip.StartsWith("Play Next", StringComparison.OrdinalIgnoreCase)) continue;
                             if (entry.GetValue("IsPromoted") is int promoted && promoted == 1)
                             {
                                 return PinResult.AlreadyPinned;
                             }
                             entry.SetValue("IsPromoted", 1, RegistryValueKind.DWord);
-                            logger.Info("Play Next: pinned the tray icon next to the clock.");
+                            logger.Info("PlayNext: pinned the tray icon next to the clock.");
                             return PinResult.Pinned;
                         }
                     }
@@ -172,7 +174,7 @@ namespace PlayNext
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't pin the tray icon next to the clock.");
+                logger.Warn(e, "PlayNext: couldn't pin the tray icon next to the clock.");
                 return PinResult.AlreadyPinned; // don't keep retrying on errors
             }
             return PinResult.NotFound;
@@ -187,7 +189,7 @@ namespace PlayNext
 
         public void ShowWhereIAmHint()
         {
-            notifyIcon.ShowBalloonTip(8000, "Play Next is in your tray",
+            notifyIcon.ShowBalloonTip(8000, "PlayNext is in your tray",
                 "Click this icon any time for game recommendations. Right-click it for more options, including hiding it.",
                 ToolTipIcon.Info);
         }

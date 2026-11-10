@@ -77,7 +77,7 @@ namespace PlayNext.UI
                 }
                 catch (Exception e)
                 {
-                    logger.Warn(e, "Play Next: couldn't set the window icon.");
+                    logger.Warn(e, "PlayNext: couldn't set the window icon.");
                 }
                 Width = 600;
                 Height = 860;
@@ -209,7 +209,7 @@ namespace PlayNext.UI
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't apply the accent color.");
+                logger.Warn(e, "PlayNext: couldn't apply the accent color.");
             }
         }
 
