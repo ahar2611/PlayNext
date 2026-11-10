@@ -1,0 +1,214 @@
+<UserControl x:Class="PlayNext.UI.PlayNextSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="clr-namespace:PlayNext.UI"
+             mc:Ignorable="d" d:DesignHeight="900" d:DesignWidth="700"
+             Foreground="{DynamicResource TextBrush}">
+    <UserControl.Resources>
+        <!-- Playnite themes don't style plain TextBlocks, so give every text an explicit theme color. -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="Header" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,20,0,8" />
+        </Style>
+        <Style x:Key="SubHeader" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+        <Style x:Key="Hint" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrushDarker}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,3,0,6" />
+        </Style>
+        <Style x:Key="Label" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="Margin" Value="0,8,0,4" />
+        </Style>
+        <Style x:Key="Panel" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{DynamicResource TextBrushDarker}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="Margin" Value="0,8,0,0" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="20,10,20,20" MaxWidth="760" HorizontalAlignment="Left">
+
+            <!-- ===== AI ===== -->
+            <TextBlock Text="AI provider" Style="{StaticResource Header}" Margin="0,0,0,8" />
+            <ComboBox ItemsSource="{Binding ProviderOptions}" SelectedValuePath="Key" DisplayMemberPath="Value"
+                      SelectedValue="{Binding Settings.Provider}" HorizontalAlignment="Left" MinWidth="380" />
+            <TextBlock Style="{StaticResource Hint}"
+                       Text="Play Next sends a summary of your library (game names, genres, tags, playtime, completion status, scores) to the provider you pick. Your API key is stored encrypted on this PC only." />
+
+            <Border Style="{StaticResource Panel}">
+                <StackPanel>
+                    <TextBlock Text="Google Gemini" Style="{StaticResource SubHeader}" />
+                    <TextBlock Text="API key" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                    <PasswordBox x:Name="GeminiKeyBox" PasswordChanged="GeminiKeyBox_PasswordChanged" />
+                    <TextBlock Style="{StaticResource Hint}">
+                        <Run Text="Get a free key at" />
+                        <Hyperlink Command="{Binding OpenUrlCommand}" CommandParameter="https://aistudio.google.com/apikey">aistudio.google.com/apikey</Hyperlink>
+                        <Run Text="(sign in with Google, then Create API key). Google may use free-tier requests to improve its products." />
+                    </TextBlock>
+                    <TextBlock Text="Model (tried first; if it doesn't answer, other models are tried as backups. Default: gemini-3.6-flash)" Style="{StaticResource Label}" />
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox IsEditable="True" ItemsSource="{Binding GeminiModelOptions}"
+                                  Text="{Binding Settings.GeminiModel, UpdateSourceTrigger=LostFocus}" Width="300" />
+                        <Button Content="Load models" Command="{Binding LoadGeminiModelsCommand}" Margin="8,0,0,0" Padding="10,2" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Panel}">
+                <StackPanel>
+                    <TextBlock Text="Anthropic Claude (optional, paid)" Style="{StaticResource SubHeader}" />
+                    <TextBlock Text="API key" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                    <PasswordBox x:Name="ClaudeKeyBox" PasswordChanged="ClaudeKeyBox_PasswordChanged" />
+                    <TextBlock Style="{StaticResource Hint}">
+                        <Run Text="Create a key at" />
+                        <Hyperlink Command="{Binding OpenUrlCommand}" CommandParameter="https://console.anthropic.com/settings/keys">console.anthropic.com</Hyperlink>
+                        <Run Text="(pay per use). Opus gives the best picks; Haiku is much cheaper." />
+                    </TextBlock>
+                    <TextBlock Text="Model" Style="{StaticResource Label}" />
+                    <ComboBox IsEditable="True" ItemsSource="{Binding ClaudeModelOptions}"
+                              Text="{Binding Settings.ClaudeModel, UpdateSourceTrigger=LostFocus}" Width="300" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <DockPanel Margin="0,10,0,0">
+                <Button DockPanel.Dock="Left" Content="Test connection" Command="{Binding TestConnectionCommand}" Padding="10,2" VerticalAlignment="Top" />
+                <TextBlock Text="{Binding TestStatus}" VerticalAlignment="Center" Margin="10,0,0,0" />
+            </DockPanel>
+
+            <!-- ===== Appearance ===== -->
+            <TextBlock Text="Appearance" Style="{StaticResource Header}" />
+            <TextBlock Text="Accent color (buttons, highlights and selected chips)" Style="{StaticResource Label}" Margin="0,0,0,4" />
+            <RadioButton GroupName="AccentMode" Content="Use one color" IsChecked="{Binding AccentCustom}" Margin="0,3" />
+            <Grid Margin="24,6,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ui:ColorWheel Grid.Column="0" Hex="{Binding Settings.AccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" />
+                <StackPanel Grid.Column="1" Margin="20,0,0,0" MaxWidth="230" HorizontalAlignment="Left">
+                    <TextBlock Text="Presets" Style="{StaticResource Label}" Margin="0,0,0,6" />
+                    <ItemsControl ItemsSource="{Binding AccentPresets}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.SetAccentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding Hex}" ToolTip="{Binding Name}" Cursor="Hand" Margin="0,0,8,8">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid Width="28" Height="28">
+                                                <Ellipse x:Name="Ring" Stroke="{DynamicResource TextBrush}" StrokeThickness="2" Opacity="0" />
+                                                <Ellipse Margin="3" Fill="{Binding Hex}" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Ring" Property="Opacity" Value="0.8" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="28" Height="28" CornerRadius="14" Background="{Binding Settings.AccentColor}" BorderBrush="{DynamicResource TextBrushDarker}"
+                                BorderThickness="1" />
+                        <TextBlock Text="Custom:" VerticalAlignment="Center" Margin="10,0,6,0" />
+                        <TextBox Text="{Binding Settings.AccentColor, UpdateSourceTrigger=PropertyChanged}" Width="90" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="Drag on the wheel to pick any color; the slider sets brightness." />
+                </StackPanel>
+            </Grid>
+            <RadioButton GroupName="AccentMode" Content="Match the #1 game's artwork (falls back to the color above)" IsChecked="{Binding AccentFromArtwork}" Margin="0,3" />
+
+            <TextBlock Text="Game lengths" Style="{StaticResource Label}" Margin="0,14,0,4" />
+            <CheckBox Content="Show real times from HowLongToBeat (story and 100%)" IsChecked="{Binding Settings.UseHowLongToBeat}" Margin="0,3" />
+            <TextBlock Style="{StaticResource Hint}"
+                       Text="If you have the HowLongToBeat add-on installed, its saved times are used directly. Other games are looked up on howlongtobeat.com when shown, then saved on this PC. HowLongToBeat has no official API, so if it changes or can't be reached, Play Next shows the AI's estimates instead (marked &quot;AI est.&quot;)." />
+            <Button Content="Clear saved HowLongToBeat times" Command="{Binding ClearHltbCacheCommand}" Padding="10,2" HorizontalAlignment="Left" />
+
+            <!-- ===== Library ===== -->
+            <TextBlock Text="What to consider" Style="{StaticResource Header}" />
+            <CheckBox Content="Suggest games to revisit (finished or abandoned games)" IsChecked="{Binding Settings.IncludeRevisits}" Margin="0,3" />
+            <CheckBox Content="Only suggest installed games" IsChecked="{Binding Settings.OnlyInstalled}" Margin="0,3" />
+            <CheckBox Content="Include hidden games" IsChecked="{Binding Settings.IncludeHidden}" Margin="0,3" />
+            <CheckBox Content="Make a list automatically when a category doesn't have one yet" IsChecked="{Binding Settings.AutoGenerate}" Margin="0,3" />
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <TextBlock Text="Max games sent to the AI:" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Settings.MaxGamesSentToAi}" Width="70" Margin="8,0,0,0" />
+            </StackPanel>
+            <TextBlock Style="{StaticResource Hint}"
+                       Text="Big libraries are trimmed to the most promising games first. Lower numbers give faster answers; 400 is a good balance on Gemini's free tier." />
+
+            <TextBlock Text="Notes for the AI (optional)" Style="{StaticResource Label}" />
+            <TextBox Text="{Binding Settings.NotesForAi}" AcceptsReturn="True" TextWrapping="Wrap" Height="70" VerticalScrollBarVisibility="Auto" />
+            <TextBlock Style="{StaticResource Hint}"
+                       Text="Example: &quot;I mostly play on a Steam Deck with a controller. I have about an hour a night. Not into sports games.&quot;" />
+
+            <!-- ===== Categories ===== -->
+            <TextBlock Text="Categories" Style="{StaticResource Header}" />
+            <TextBlock Style="{StaticResource Hint}"
+                       Text="&quot;Overall&quot; is always available. The description tells the AI what belongs in a category. Keywords (comma-separated genres/tags) are hints for the AI and the filter for the built-in mode." />
+            <Grid Margin="0,4,0,0" Height="300">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="0" Margin="0,0,12,0">
+                    <StackPanel DockPanel.Dock="Bottom" Margin="0,6,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Add" Command="{Binding AddCategoryCommand}" Padding="10,2" />
+                            <Button Content="Remove" Command="{Binding RemoveCategoryCommand}" Padding="10,2" Margin="6,0,0,0" />
+                        </StackPanel>
+                        <Button Content="Reset to defaults" Command="{Binding ResetCategoriesCommand}" Padding="10,2" Margin="0,6,0,0" HorizontalAlignment="Left" />
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding Settings.Categories}" SelectedItem="{Binding SelectedCategory}" DisplayMemberPath="Name" />
+                </DockPanel>
+                <StackPanel Grid.Column="1" DataContext="{Binding SelectedCategory}">
+                    <TextBlock Text="Name" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="Description (for the AI)" Style="{StaticResource Label}" />
+                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" Height="70"
+                             VerticalScrollBarVisibility="Auto" />
+                    <TextBlock Text="Keywords" Style="{StaticResource Label}" />
+                    <TextBox Text="{Binding Keywords, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Height="60" VerticalScrollBarVisibility="Auto" />
+                </StackPanel>
+            </Grid>
+
+            <!-- ===== Tray & misc ===== -->
+            <TextBlock Text="Tray icon and window" Style="{StaticResource Header}" />
+            <CheckBox Content="Show Play Next icon in the system tray (next to the clock)" IsChecked="{Binding Settings.ShowTrayIcon}" Margin="0,3" />
+            <CheckBox Content="Keep the icon next to the clock instead of under the ^ arrow (Windows 11)" IsChecked="{Binding Settings.PinTrayIcon}" Margin="0,3" />
+            <CheckBox Content="Close the tray popup when clicking elsewhere" IsChecked="{Binding Settings.ClosePopupOnFocusLoss}" Margin="0,3" />
+            <TextBlock Style="{StaticResource Hint}"
+                       Text="You can also hide the icon from its right-click menu. It's there while Playnite runs: to always have it, turn on Playnite's start-with-Windows, start-minimized and minimize-to-tray options (Settings, General). On Windows 10, drag the icon out from under the ^ arrow to keep it next to the clock." />
+
+            <TextBlock Text="Housekeeping" Style="{StaticResource Header}" />
+            <TextBlock Text="{Binding DismissedSummary}" Margin="0,0,0,6" />
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Clear &quot;Not interested&quot; list" Command="{Binding ClearDismissedCommand}" Padding="10,2" />
+                <Button Content="Clear saved lists" Command="{Binding ClearCacheCommand}" Padding="10,2" Margin="8,0,0,0" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

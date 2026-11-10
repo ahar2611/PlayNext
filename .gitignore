@@ -1,0 +1,11 @@
+# Build output
+bin/
+obj/
+*.pext
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo

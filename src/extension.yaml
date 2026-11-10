@@ -1,0 +1,14 @@
+Id: PlayNext_67c5a910-8da6-44c2-bd79-88b4c171c113
+Name: Play Next
+Author: Lanney
+Version: 1.2.0
+Module: PlayNext.dll
+Type: GenericPlugin
+Icon: icon.png
+Links:
+  - Name: GitHub
+    Url: https://github.com/ahar2611/PlayNext
+  - Name: Report an issue
+    Url: https://github.com/ahar2611/PlayNext/issues
+  - Name: Get a free Gemini API key
+    Url: https://aistudio.google.com/apikey
