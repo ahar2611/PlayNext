@@ -10,8 +10,8 @@
     <AssemblyName>PlayNext</AssemblyName>
     <Version>1.2.0</Version>
     <Authors>Lanney</Authors>
-    <Product>Play Next</Product>
-    <Description>Play Next: recommendations from your own Playnite library.</Description>
+    <Product>PlayNext</Product>
+    <Description>PlayNext: recommendations from your own Playnite library.</Description>
     <Copyright>Copyright (c) 2026 Lanney</Copyright>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

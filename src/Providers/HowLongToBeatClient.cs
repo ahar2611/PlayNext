@@ -22,7 +22,7 @@ namespace PlayNext.Providers
         public double Plus { get; set; }
         public double Full { get; set; }
         public bool NotFound { get; set; }
-        /// <summary>Read from the HowLongToBeat Playnite add-on's saved data rather than looked up by Play Next.</summary>
+        /// <summary>Read from the HowLongToBeat Playnite add-on's saved data rather than looked up by PlayNext.</summary>
         public bool FromAddon { get; set; }
         public DateTime Fetched { get; set; }
         public bool HasData => !NotFound && (Main > 0 || Full > 0 || Plus > 0);
@@ -61,11 +61,11 @@ namespace PlayNext.Providers
             {
                 var extensionsData = Directory.GetParent(dataDir)?.FullName;
                 if (extensionsData != null) addonDataDir = Path.Combine(extensionsData, HltbAddonId, "HowLongToBeat");
-                logger.Info("Play Next: HowLongToBeat add-on data " + (Directory.Exists(addonDataDir) ? "found at " + addonDataDir : "not found; using online lookups."));
+                logger.Info("PlayNext: HowLongToBeat add-on data " + (Directory.Exists(addonDataDir) ? "found at " + addonDataDir : "not found; using online lookups."));
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't locate HowLongToBeat add-on data.");
+                logger.Warn(e, "PlayNext: couldn't locate HowLongToBeat add-on data.");
             }
         }
 
@@ -83,7 +83,7 @@ namespace PlayNext.Providers
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't read the HowLongToBeat cache.");
+                logger.Warn(e, "PlayNext: couldn't read the HowLongToBeat cache.");
             }
             return new Dictionary<Guid, HltbEntry>();
         }
@@ -99,7 +99,7 @@ namespace PlayNext.Providers
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't save the HowLongToBeat cache.");
+                logger.Warn(e, "PlayNext: couldn't save the HowLongToBeat cache.");
             }
         }
 
@@ -148,13 +148,13 @@ namespace PlayNext.Providers
             }
             catch (Exception e)
             {
-                logger.Warn(e, $"Play Next: couldn't read HowLongToBeat add-on data for {gameId}.");
+                logger.Warn(e, $"PlayNext: couldn't read HowLongToBeat add-on data for {gameId}.");
                 return null;
             }
         }
 
         /// <summary>
-        /// Known times for a game: the HowLongToBeat add-on's data first, then Play Next's own cache
+        /// Known times for a game: the HowLongToBeat add-on's data first, then PlayNext's own cache
         /// if it's fresh enough (found: 60 days, not found: 7 days).
         /// </summary>
         public HltbEntry GetCached(Guid gameId)
@@ -198,8 +198,8 @@ namespace PlayNext.Providers
                 lock (cache) cache[gameId] = entry;
                 SaveCache();
                 logger.Info(entry.NotFound
-                    ? $"Play Next: HowLongToBeat has no match for \"{name}\"."
-                    : $"Play Next: HowLongToBeat \"{name}\" → \"{entry.MatchedName}\" ({entry.Main:0.#}h / {entry.Plus:0.#}h / {entry.Full:0.#}h).");
+                    ? $"PlayNext: HowLongToBeat has no match for \"{name}\"."
+                    : $"PlayNext: HowLongToBeat \"{name}\" → \"{entry.MatchedName}\" ({entry.Main:0.#}h / {entry.Plus:0.#}h / {entry.Full:0.#}h).");
                 // Be polite to the site: space out lookups a little.
                 await Task.Delay(250, token).ConfigureAwait(false);
                 return entry;
@@ -210,7 +210,7 @@ namespace PlayNext.Providers
             }
             catch (Exception e)
             {
-                logger.Warn(e, $"Play Next: HowLongToBeat lookup failed for \"{name}\"; using AI estimates for a while.");
+                logger.Warn(e, $"PlayNext: HowLongToBeat lookup failed for \"{name}\"; using AI estimates for a while.");
                 unavailableUntil = DateTime.Now.AddMinutes(10);
                 ResetSession();
                 return null;
@@ -271,7 +271,7 @@ namespace PlayNext.Providers
             if (searchPath == null)
             {
                 searchPath = await DiscoverSearchPathAsync(token).ConfigureAwait(false) ?? "api/s";
-                logger.Info("Play Next: HowLongToBeat search endpoint: " + searchPath);
+                logger.Info("PlayNext: HowLongToBeat search endpoint: " + searchPath);
             }
 
             var ms = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;

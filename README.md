@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="docs/icon.png" width="112" alt="Play Next logo">
+  <img src="docs/icon.png" width="112" alt="PlayNext logo">
 </p>
 
-<h1 align="center">Play Next</h1>
+<h1 align="center">PlayNext</h1>
 
 <p align="center">
-  <b>Can't decide what to play? Play Next looks at your Playnite library and tells you.</b>
+  <b>Can't decide what to play? PlayNext looks at your Playnite library and tells you.</b>
 </p>
 
 <p align="center">
@@ -18,7 +18,7 @@
 
 Got a huge library and no idea what to play? Same.
 
-Play Next goes through your [Playnite](https://playnite.link) library and picks what you should play next. It looks at how much you've played each game, what you finished, what you gave up on, your favorites and the genres you keep coming back to. Then it gives you a ranked list with a short reason for every pick, like *"You were really into this last month, so finish it off."*
+PlayNext goes through your [Playnite](https://playnite.link) library and picks what you should play next. It looks at how much you've played each game, what you finished, what you gave up on, your favorites and the genres you keep coming back to. Then it gives you a ranked list with a short reason for every pick, like *"You were really into this last month, so finish it off."*
 
 <p align="center">
   <img src="docs/screenshots/for-you.png" width="32%" alt="Recommendations for the Multiplayer and Co-op category">
@@ -37,15 +37,15 @@ Play Next goes through your [Playnite](https://playnite.link) library and picks 
 - **Looks the part.** It's a glass-style window that takes its color from your top game's artwork, or from any color you choose.
 
 <p align="center">
-  <img src="docs/screenshots/generating.png" width="32%" alt="Play Next generating new lists">
+  <img src="docs/screenshots/generating.png" width="32%" alt="PlayNext generating new lists">
 </p>
 
 ## Getting started
 
 1. **Install:** download the `.pext` file from the [latest release](https://github.com/ahar2611/PlayNext/releases/latest), then double-click it (or drag it onto Playnite) and restart Playnite when asked.
 2. **Get a free AI key:** sign in at [Google AI Studio](https://aistudio.google.com/apikey) and click **Create API key**. It takes about a minute and costs nothing.
-3. **Add the key:** in Playnite, go to **Settings → Extensions → Generic → Play Next**, paste the key and click **Test connection**.
-4. **Open Play Next** from the sidebar button or the tray icon by your clock, and click **Refresh**. The first lists take about 30 to 120 seconds.
+3. **Add the key:** in Playnite, go to **Settings → Extensions → Generic → PlayNext**, paste the key and click **Test connection**.
+4. **Open PlayNext** from the sidebar button or the tray icon by your clock, and click **Refresh**. The first lists take about 30 to 120 seconds.
 
 > Requires Playnite 10 on Windows.
 
@@ -68,7 +68,7 @@ Play Next goes through your [Playnite](https://playnite.link) library and picks 
 - **Want the tray icon always there?** In Playnite's settings, turn on starting with Windows, starting minimized and minimizing to the tray. On Windows 11 the icon pins itself next to the clock the first time. You can hide it from its right-click menu.
 - **"None of the Gemini models worked"** usually means Google's free tier is busy or you've hit its rate limit. Wait a minute and try again.
 - **Times show "AI est." instead of "HLTB"** when a game couldn't be found on HowLongToBeat.
-- **Something else?** Search `%AppData%\Playnite\playnite.log` for "Play Next" and [open an issue](https://github.com/ahar2611/PlayNext/issues) with what you find.
+- **Something else?** Search `%AppData%\Playnite\playnite.log` for "PlayNext" and [open an issue](https://github.com/ahar2611/PlayNext/issues) with what you find.
 
 ## Building from source
 
@@ -82,7 +82,7 @@ Zip `PlayNext.dll`, `extension.yaml`, `icon.png` and `sidebar.png` from `src/bin
 
 ## Credits
 
-- Game length data from [HowLongToBeat](https://howlongtobeat.com). Play Next isn't affiliated with HowLongToBeat.
+- Game length data from [HowLongToBeat](https://howlongtobeat.com). PlayNext isn't affiliated with HowLongToBeat.
 - Built for [Playnite](https://playnite.link) by Josef Nemec and contributors.
 
 ## License

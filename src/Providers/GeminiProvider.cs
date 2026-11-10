@@ -61,7 +61,7 @@ namespace PlayNext.Providers
         {
             if (string.IsNullOrWhiteSpace(key))
             {
-                throw new ProviderException("No Gemini API key yet. Get a free one at aistudio.google.com/apikey and paste it in Play Next's settings.");
+                throw new ProviderException("No Gemini API key yet. Get a free one at aistudio.google.com/apikey and paste it in PlayNext's settings.");
             }
         }
 
@@ -85,7 +85,7 @@ namespace PlayNext.Providers
         {
             var message = ErrorMessage(body);
             if (status == 400 && message.IndexOf("API key", StringComparison.OrdinalIgnoreCase) >= 0)
-                return new ProviderException("Gemini rejected the API key. Check it in Play Next's settings (aistudio.google.com/apikey).");
+                return new ProviderException("Gemini rejected the API key. Check it in PlayNext's settings (aistudio.google.com/apikey).");
             if (status == 404 || (status == 400 && (message.IndexOf("not found", StringComparison.OrdinalIgnoreCase) >= 0 || message.IndexOf("not supported", StringComparison.OrdinalIgnoreCase) >= 0)))
                 return new ModelUnavailableException($"Model \"{model}\" isn't available: {message}");
             if (status == 403)
@@ -159,7 +159,7 @@ namespace PlayNext.Providers
                 return 5;
             };
             var ranked = usable.OrderBy(group).ThenByDescending(Version).ThenBy(m => m.Length).ToList();
-            // Play Next's default: start with this model when the key can use it.
+            // PlayNext's default: start with this model when the key can use it.
             if (ranked.Remove(DefaultModel)) ranked.Insert(0, DefaultModel);
             return ranked;
         }
@@ -273,7 +273,7 @@ namespace PlayNext.Providers
             RequireKey(apiKey);
             progress?.Report("Connecting to Google and listing the models your key can use…");
             var candidates = (await CandidateModelsAsync().ConfigureAwait(false)).Take(maxModels).ToList();
-            logger.Info("Play Next: Gemini models to try: " + string.Join(", ", candidates));
+            logger.Info("PlayNext: Gemini models to try: " + string.Join(", ", candidates));
             var failures = new List<string>();
             foreach (var model in candidates)
             {
@@ -289,7 +289,7 @@ namespace PlayNext.Providers
                 }
                 catch (Exception e) when (e is ModelUnavailableException || e is ProviderTimeoutException)
                 {
-                    logger.Warn("Play Next: " + e.Message);
+                    logger.Warn("PlayNext: " + e.Message);
                     failures.Add(e.Message);
                     lock (workingModelCache)
                     {
@@ -389,7 +389,7 @@ namespace PlayNext.Providers
                 }
             }
 
-            logger.Info($"Play Next: {model} finished ({finishReason ?? "no finish reason"}, {answer.Length} chars, thoughts: {sawThought}).");
+            logger.Info($"PlayNext: {model} finished ({finishReason ?? "no finish reason"}, {answer.Length} chars, thoughts: {sawThought}).");
             if (!string.IsNullOrEmpty(blockReason))
             {
                 throw new ProviderException("Gemini declined the request (" + blockReason + "). Try again.");

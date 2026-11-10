@@ -25,7 +25,7 @@ namespace PlayNext
     {
         public static readonly IList<KeyValuePair<string, string>> All = new List<KeyValuePair<string, string>>
         {
-            new KeyValuePair<string, string>("Play Next red", "#E60023"),
+            new KeyValuePair<string, string>("PlayNext red", "#E60023"),
             new KeyValuePair<string, string>("Ember", "#F97316"),
             new KeyValuePair<string, string>("Crimson", "#E11D48"),
             new KeyValuePair<string, string>("Rose", "#EC4899"),

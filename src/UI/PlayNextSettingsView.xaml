@@ -49,7 +49,7 @@
             <ComboBox ItemsSource="{Binding ProviderOptions}" SelectedValuePath="Key" DisplayMemberPath="Value"
                       SelectedValue="{Binding Settings.Provider}" HorizontalAlignment="Left" MinWidth="380" />
             <TextBlock Style="{StaticResource Hint}"
-                       Text="Play Next sends a summary of your library (game names, genres, tags, playtime, completion status, scores) to the provider you pick. Your API key is stored encrypted on this PC only." />
+                       Text="PlayNext sends a summary of your library (game names, genres, tags, playtime, completion status, scores) to the provider you pick. Your API key is stored encrypted on this PC only." />
 
             <Border Style="{StaticResource Panel}">
                 <StackPanel>
@@ -144,7 +144,7 @@
             <TextBlock Text="Game lengths" Style="{StaticResource Label}" Margin="0,14,0,4" />
             <CheckBox Content="Show real times from HowLongToBeat (story and 100%)" IsChecked="{Binding Settings.UseHowLongToBeat}" Margin="0,3" />
             <TextBlock Style="{StaticResource Hint}"
-                       Text="If you have the HowLongToBeat add-on installed, its saved times are used directly. Other games are looked up on howlongtobeat.com when shown, then saved on this PC. HowLongToBeat has no official API, so if it changes or can't be reached, Play Next shows the AI's estimates instead (marked &quot;AI est.&quot;)." />
+                       Text="If you have the HowLongToBeat add-on installed, its saved times are used directly. Other games are looked up on howlongtobeat.com when shown, then saved on this PC. HowLongToBeat has no official API, so if it changes or can't be reached, PlayNext shows the AI's estimates instead (marked &quot;AI est.&quot;)." />
             <Button Content="Clear saved HowLongToBeat times" Command="{Binding ClearHltbCacheCommand}" Padding="10,2" HorizontalAlignment="Left" />
 
             <!-- ===== Library ===== -->
@@ -197,7 +197,7 @@
 
             <!-- ===== Tray & misc ===== -->
             <TextBlock Text="Tray icon and window" Style="{StaticResource Header}" />
-            <CheckBox Content="Show Play Next icon in the system tray (next to the clock)" IsChecked="{Binding Settings.ShowTrayIcon}" Margin="0,3" />
+            <CheckBox Content="Show PlayNext icon in the system tray (next to the clock)" IsChecked="{Binding Settings.ShowTrayIcon}" Margin="0,3" />
             <CheckBox Content="Keep the icon next to the clock instead of under the ^ arrow (Windows 11)" IsChecked="{Binding Settings.PinTrayIcon}" Margin="0,3" />
             <CheckBox Content="Close the tray popup when clicking elsewhere" IsChecked="{Binding Settings.ClosePopupOnFocusLoss}" Margin="0,3" />
             <TextBlock Style="{StaticResource Hint}"

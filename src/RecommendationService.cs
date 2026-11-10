@@ -59,7 +59,7 @@ namespace PlayNext
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't read cached recommendations.");
+                logger.Warn(e, "PlayNext: couldn't read cached recommendations.");
             }
             return null;
         }
@@ -80,7 +80,7 @@ namespace PlayNext
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't save recommendations.");
+                logger.Warn(e, "PlayNext: couldn't save recommendations.");
             }
         }
 
@@ -156,7 +156,7 @@ namespace PlayNext
             var eligible = analyzer.Eligible(settings).ToList();
             if (eligible.Count == 0)
             {
-                throw new ProviderException("No games to recommend. Check the library filters in Play Next's settings.");
+                throw new ProviderException("No games to recommend. Check the library filters in PlayNext's settings.");
             }
 
             var batch = new GenerationBatch { GeneratedAt = DateTime.Now, RequestedCount = count };
@@ -195,7 +195,7 @@ namespace PlayNext
                 var systemPrompt = BuildSystemPrompt(analyzer, candidates, settings);
                 var userPrompt = BuildUserPrompt(categories, count);
                 LastPrompts = systemPrompt + "\n----- USER -----\n" + userPrompt;
-                logger.Info($"Play Next: asking {provider.DisplayName} for {categories.Count} categories with {candidates.Count} of {eligible.Count} games ({systemPrompt.Length + userPrompt.Length} chars).");
+                logger.Info($"PlayNext: asking {provider.DisplayName} for {categories.Count} categories with {candidates.Count} of {eligible.Count} games ({systemPrompt.Length + userPrompt.Length} chars).");
                 var answer = await provider.GenerateAsync(systemPrompt, userPrompt, progress, token);
 
                 batch.ProviderName = provider.DisplayName;
@@ -252,8 +252,8 @@ namespace PlayNext
                 }
                 var aiCounts = string.Join(", ", batch.Lists.Select(kv => $"{kv.Key} {kv.Value.Items.Count}"));
                 TopUpLists(batch, analyzer, eligible, categories);
-                logger.Info("Play Next: AI picks per list: " + aiCounts);
-                logger.Info("Play Next: got lists for " + string.Join(", ", batch.Lists.Select(kv => $"{kv.Key} ({kv.Value.Items.Count})")));
+                logger.Info("PlayNext: AI picks per list: " + aiCounts);
+                logger.Info("PlayNext: got lists for " + string.Join(", ", batch.Lists.Select(kv => $"{kv.Key} ({kv.Value.Items.Count})")));
             }
 
             Batch = batch;
@@ -350,7 +350,7 @@ namespace PlayNext
         private static string BuildSystemPrompt(LibraryAnalyzer analyzer, List<GameSnapshot> candidates, PlayNextSettings settings)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("You are the recommendation engine inside Play Next, an add-on for the Playnite game library manager.");
+            sb.AppendLine("You are the recommendation engine inside PlayNext, an add-on for the Playnite game library manager.");
             sb.AppendLine("Your job: study the player's OWN library below, describe how they play, and pick what they should play next in several categories, using their habits, playtime, completion history and your own knowledge of each game (genre, tone, length, reputation).");
             sb.AppendLine();
             sb.AppendLine("How to read the library list: each line is");

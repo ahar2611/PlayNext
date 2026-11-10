@@ -1,10 +1,10 @@
 AddonId: 'PlayNext_67c5a910-8da6-44c2-bd79-88b4c171c113'
 Type: Generic
-Name: 'Play Next'
+Name: 'PlayNext'
 Author: 'Lanney'
-ShortDescription: "Can't decide what to play? Play Next looks at your library and picks what to play next, with a quick reason for each pick."
+ShortDescription: "Can't decide what to play? PlayNext looks at your library and picks what to play next, with a quick reason for each pick."
 Description: |
-  Play Next goes through your Playnite library and picks what you should play next. It looks at how much you've played each game, what you finished, what you gave up on, your favorites and the genres you keep coming back to, then gives you a ranked list with a short reason for every pick.
+  PlayNext goes through your Playnite library and picks what you should play next. It looks at how much you've played each game, what you finished, what you gave up on, your favorites and the genres you keep coming back to, then gives you a ranked list with a short reason for every pick.
 
   There's an Overall list and lists for Story-rich, RPGs, Action, Cozy & Chill, Strategy, Horror, short games and multiplayer, and you can change those categories however you want. Every pick is tagged as something new, something to continue, or an old favorite worth revisiting, and shows HowLongToBeat times (using the HowLongToBeat add-on's data if you have it).
 

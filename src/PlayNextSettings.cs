@@ -96,7 +96,7 @@ namespace PlayNext
         public bool CategoriesCollapsed { get => categoriesCollapsed; set => SetValue(ref categoriesCollapsed, value); }
 
         private bool trayHintShown = false;
-        /// <summary>Whether the one-time "Play Next is in your tray" notification was shown.</summary>
+        /// <summary>Whether the one-time "PlayNext is in your tray" notification was shown.</summary>
         public bool TrayHintShown { get => trayHintShown; set => SetValue(ref trayHintShown, value); }
 
         private bool closePopupOnFocusLoss = true;

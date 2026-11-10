@@ -427,7 +427,7 @@ namespace PlayNext.UI
             }
             catch (Exception e)
             {
-                logger.Warn(e, "Play Next: couldn't compute stats.");
+                logger.Warn(e, "PlayNext: couldn't compute stats.");
             }
             GenreMixVisibility = GenreMix.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -521,7 +521,7 @@ namespace PlayNext.UI
                 }
                 catch (Exception e)
                 {
-                    logger.Warn(e, "Play Next: HowLongToBeat lookup failed.");
+                    logger.Warn(e, "PlayNext: HowLongToBeat lookup failed.");
                 }
                 item.LookupVisibility = Visibility.Collapsed;
                 if (entry != null && entry.HasData) item.ApplyLength(entry.Main, entry.Plus, entry.Full, true, entry.Url);
@@ -631,7 +631,7 @@ namespace PlayNext.UI
             }
             catch (Exception e)
             {
-                logger.Error(e, "Play Next: failed to generate recommendations.");
+                logger.Error(e, "PlayNext: failed to generate recommendations.");
                 if (version == generationVersion)
                 {
                     Error = e is System.Net.Http.HttpRequestException || e.InnerException is System.Net.WebException
