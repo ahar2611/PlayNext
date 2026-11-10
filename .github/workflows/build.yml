@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build
+        run: dotnet build src/PlayNext.csproj -c Release
+
+      - name: Package .pext
+        shell: pwsh
+        run: |
+          $version = (Select-String -Path src/extension.yaml -Pattern '^Version:\s*(.+)$').Matches[0].Groups[1].Value.Trim()
+          $name = "PlayNext_67c5a910-8da6-44c2-bd79-88b4c171c113_$($version.Replace('.', '_')).pext"
+          $out = 'src/bin/Release'
+          Compress-Archive -Path "$out/PlayNext.dll", "$out/extension.yaml", "$out/icon.png", "$out/sidebar.png" -DestinationPath "$name.zip"
+          Move-Item "$name.zip" $name
+          "PEXT=$name" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pext
+          path: '*.pext'
+
+      - name: Attach to a draft release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = '${{ github.ref_name }}'
+          if ($tag -ne "v$env:VERSION") { throw "Tag $tag doesn't match extension.yaml version $env:VERSION" }
+          gh release view $tag 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag --draft --title "Play Next $env:VERSION" --notes "See [CHANGELOG.md](https://github.com/ahar2611/PlayNext/blob/main/CHANGELOG.md)."
+          }
+          gh release upload $tag $env:PEXT --clobber
